@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from database import Base, engine, Session
 from models import SensorData
 from mqtt_client import start as start_mqtt
+from datetime import datetime
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
@@ -27,4 +28,25 @@ def latest():
 
     data = latest_entry.__dict__.copy()
     data.pop("_sa_instance_state", None)
+    return data
+
+@app.get("/grafana-data")
+def grafana_data():
+    session = Session()
+    results = session.query(SensorData).order_by(SensorData.timestamp_ms.desc()).limit(100).all()
+    session.close()
+
+    data = []
+    for row in results:
+        data.append({
+            "timestamp": datetime.utcfromtimestamp(row.timestamp_ms / 1000).isoformat() + "Z",
+            "light": row.light,
+            "eco2": row.eco2,
+            "tvoc": row.tvoc,
+            "temp": row.temp,
+            "humidity": row.humidity,
+            "should_open": row.should_open,
+            "reason": row.reason,
+        })
+
     return data
