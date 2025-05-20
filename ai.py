@@ -24,7 +24,7 @@ def ask_ai(indoor, outdoor):
     }
 
     request_payload = {
-        "model": "meta-llama/llama-3.3-8b-instruct:free",
+        "model": "meta-llama/llama-4-maverick:free",
         "messages": [
             {
                 "role": "user",
