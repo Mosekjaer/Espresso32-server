@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+paho-mqtt
+psycopg2-binary
+exponent_server_sdk
+python-dotenv
+requests
