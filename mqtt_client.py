@@ -6,6 +6,7 @@ from ai import ask_ai
 from database import Session
 from models import SensorData
 from notifications import send_push_notification
+from models import AirQualityAdvice
 
 mqtt_client = Client()
 
@@ -22,29 +23,25 @@ def on_message(client, userdata, msg):
         outdoor_data = get_dmi_observation()
         ai_response = ask_ai(indoor_data, outdoor_data)
         
-        print("AI siger:", ai_response)
+        print("Du skal åbne vindue:", ai_response.should_open)
+        print("AI siger:", ai_response.reason)
         
-        parsed = json.loads(ai_response)
         session = Session()
         entry = SensorData(
             **indoor_data,
-            should_open=1 if parsed["should_open"] else 0,
-            reason=parsed["reason"]
+            should_open=int(ai_response.should_open),
+            reason=ai_response.reason
         )
         session.add(entry)
         session.commit()
         
-        # Gem værdier inden session lukkes
-        should_open = entry.should_open
-        reason = entry.reason
-        
         session.close()
         
-        if should_open:
+        if ai_response.should_open:
             send_push_notification(
                 EXPO_PUSH_TOKEN,
                 title="Tid til at lufte ud!",
-                body=reason
+                body=ai_response.reason
             )
 
     except Exception as e:

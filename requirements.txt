@@ -6,3 +6,4 @@ psycopg2-binary
 exponent_server_sdk
 python-dotenv
 requests
+google-genai

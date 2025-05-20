@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Float, Integer, BigInteger, Text
+from pydantic import BaseModel
 from database import Base
 
 class SensorData(Base):
@@ -13,3 +14,7 @@ class SensorData(Base):
     humidity = Column(Float)
     should_open = Column(Integer)
     reason = Column(Text)
+    
+class AirQualityAdvice(BaseModel):
+    should_open: bool
+    reason: str

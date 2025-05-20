@@ -10,6 +10,7 @@ services:
       MQTT_PASSWORD: ${MQTT_PASSWORD}
       EXPO_PUSH_TOKEN: ${EXPO_PUSH_TOKEN}
       MQTT_BROKER: ${MQTT_BROKER}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
     ports:
       - "8111:8000"
     env_file:
