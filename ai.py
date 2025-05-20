@@ -29,9 +29,12 @@ def ask_ai(indoor, outdoor):
             {
                 "role": "user",
                 "content": (
-                    f"Indendørs luftdata:\n{json.dumps(indoor, indent=2)}\n\n"
-                    f"Udendørs vejrdata:\n{json.dumps(outdoor, indent=2)}\n\n"
-                    "Skal jeg åbne vinduet for frisk luft? Svar i JSON."
+                    f"Her er data fra min lejlighed:\n{json.dumps(indoor, indent=2)}\n\n"
+                    f"Her er lidt om vejret udenfor:\n{json.dumps(outdoor, indent=2)}\n\n"
+                    "Giv mig en kort vurdering af indeklimaet baseret på de indendørs målinger.\n"
+                    "Fokuser især på CO2, temperatur og luftfugtighed.\n"
+                    "Hvis luften virker for dårlig, så sig klart om jeg bør lufte ud lige nu og hvorfor eller hvorfor ikke.\n"
+                    "Svar gerne kort og præcist, så jeg hurtigt kan tage en beslutning."
                 )
             }
         ],
