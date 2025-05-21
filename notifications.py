@@ -7,7 +7,9 @@ def send_push_notification(expo_push_token, title, body):
                 to=expo_push_token,
                 title=title,
                 body=body,
-                sound="default"
+                sound="default",
+                priority="high",
+                channel_id="default"
             )
         )
         print("Push-svar:", response)

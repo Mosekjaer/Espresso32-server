@@ -20,26 +20,25 @@ def on_message(client, userdata, msg):
     try:
         indoor_data = json.loads(msg.payload.decode())
         outdoor_data = get_dmi_observation()
+
         ai_response = ask_ai(indoor_data, outdoor_data)
-        
+
         print("AI siger:", ai_response)
-        
-        parsed = json.loads(ai_response)
+
         session = Session()
         entry = SensorData(
             **indoor_data,
-            should_open=1 if parsed["should_open"] else 0,
-            reason=parsed["reason"]
+            should_open=1 if ai_response["should_open"] else 0,
+            reason=ai_response["reason"]
         )
         session.add(entry)
         session.commit()
-        
-        # Gem værdier inden session lukkes
+
         should_open = entry.should_open
         reason = entry.reason
-        
+
         session.close()
-        
+
         if should_open:
             send_push_notification(
                 EXPO_PUSH_TOKEN,
